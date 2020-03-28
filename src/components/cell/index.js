@@ -14,9 +14,7 @@ export default class Cell extends Phaser.GameObjects.Container {
     const text = new Phaser.GameObjects.Text(scene, 18, 15, value, { color: FONT_COLOR, fontSize: 25 })
     text.setOrigin(0.3, 0.1)
     
-    const triangle = new Phaser.GameObjects.Triangle(scene, 0, 0, 25, 10, 10, 20, 50, 30, 0x155c00)
-
-    super(scene, x, y, [rectangle, text, border_top, border_bottom, border_left, border_right, triangle])
+    super(scene, x, y, [rectangle, text, border_top, border_bottom, border_left, border_right])
   }
 
 }
