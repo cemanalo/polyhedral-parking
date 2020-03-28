@@ -10,6 +10,7 @@ import RoundTracker from '../round_tracker'
 import DiscardedDie from '../discarded_die'
 import Dice from '../dice'
 import RollDice from '../button/roll_dice'
+import BuyLot from '../button/buy_lot'
 
 import { getBoard } from '../../game_component/board'
 
@@ -18,7 +19,7 @@ export default class Board extends Phaser.GameObjects.Container {
     const SIZE = 50
     const HALF = SIZE / 2
     const boardSetup = getBoard()
-    const penaltyValues = [1, 3, 6]
+    const penaltyValues = ['1★', '3★', '6★']
 
     const cells = []
     const penalties = []
@@ -43,16 +44,23 @@ export default class Board extends Phaser.GameObjects.Container {
     
     // development
     const tree = new Tree(scene, SIZE * 10 + 20, HALF)
+    const treeCost = new Phaser.GameObjects.Text(scene, SIZE * 10 + 10, SIZE, '1-4', { fontSize: 12, color: 0xffffff })
     const path = new Path(scene, SIZE * 11 + 20, HALF)
+    const pathCost = new Phaser.GameObjects.Text(scene, SIZE * 11 + 10, SIZE, '5-8', { fontSize: 12, color: 0xffffff })
     const water = new Water(scene, SIZE * 12 + 20, HALF)
+    const waterCost = new Phaser.GameObjects.Text(scene, SIZE * 12 + 10, SIZE, '9-12', { fontSize: 12, color: 0xffffff })
     const bench = new Bench(scene, SIZE * 13 + 20, HALF)
+    const benchCost = new Phaser.GameObjects.Text(scene, SIZE * 13 + 10, SIZE, '13+', { fontSize: 12, color: 0xffffff })
 
     const roundTracker = new RoundTracker(scene, SIZE * 10, SIZE + 20)
     const discardedDie = new DiscardedDie(scene, SIZE * 3 + 10, (SIZE * 10) - 15)
     const dice = new Dice(scene, SIZE * 10 + 20, SIZE * 9.6)
 
-    const rollDiceBtn = new RollDice(scene, SIZE * 13 + 20, SIZE * 10.7)
-    super(scene, x, y, [ ...cells, ...penalties, tree, path, water, bench, roundTracker, discardedDie, dice, rollDiceBtn ])
 
+    const buyLotBtn = new BuyLot(scene, SIZE * 11 + 20, SIZE * 10.7)
+    const rollDiceBtn = new RollDice(scene, SIZE * 13 + 20, SIZE * 10.7)
+
+    super(scene, x, y, [ ...cells, ...penalties, tree, treeCost, path, pathCost, water, waterCost, bench, benchCost, roundTracker, discardedDie, dice, rollDiceBtn, buyLotBtn ])
   }
+
 }

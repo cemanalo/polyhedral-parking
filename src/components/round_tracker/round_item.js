@@ -1,5 +1,7 @@
 import { GameObjects } from 'phaser'
 
+import Dice from '../dice'
+
 export default class RoundItem extends GameObjects.Container {
   constructor(scene, x, y, roundNumber) {
     const FONT_COLOR = 0xfff
@@ -17,5 +19,12 @@ export default class RoundItem extends GameObjects.Container {
     const border_right = new GameObjects.Line(scene, WIDTH, 0, 0, 0, 0, HEIGHT, 0)
 
     super(scene, x, y, [ text, rectangle, border_top, border_bottom, border_left, border_right ])
+
+    this.scene = scene
+  }
+
+  addDice(diceValues) {
+    const dice = new Dice(this.scene, 10, -15, diceValues)
+    this.add(dice)
   }
 }
