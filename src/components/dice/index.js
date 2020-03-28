@@ -9,7 +9,10 @@ export default class Dice extends GameObjects.Container {
 
     for(var i = 0; i < diceTypes.length; i++) {
       const die = new Die(scene, i * 40, 0, diceTypes[i])
-      if(diceValues) die.setValue(diceValues[i])
+      if(diceValues) {
+        die.setValue(diceValues[i])
+        die.setIsSelectable()
+      }
       dice.push(die)
     }
 

@@ -3,7 +3,7 @@ import EventTypes from '../../event_types'
 
 export default class RollDice extends GameObjects.Container {
   constructor(scene, x, y) {
-    const WIDTH = 100
+    const WIDTH = 80
     const HEIGHT = 30
 
     const rectangle = new GameObjects.Rectangle(scene, 0, 0, 80, 30, 0x649e67)

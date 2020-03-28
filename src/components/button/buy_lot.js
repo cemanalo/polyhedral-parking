@@ -15,9 +15,10 @@ export default class BuyLot extends GameObjects.Container {
 
     this.rectangle = rectangle
     this.setInteractive(shape, Geom.Rectangle.Contains)
-    this.enabled = true
+
     this.text = text
     this.scene = scene
+    this.setEnabled(false)
 
     this.on(Input.Events.GAMEOBJECT_POINTER_UP, this.onPointerUp)
     this.on(Input.Events.GAMEOBJECT_POINTER_DOWN, this.onPointerDown)
@@ -26,12 +27,10 @@ export default class BuyLot extends GameObjects.Container {
   }
 
   onPointerUp() {
-    console.log('B', this.enabled)
     if (this.enabled) {
-      this.enabled = false
-      // this.scene.events.emit(EventTypes.ROLL_DICE)
       this.rectangle.setScale(1, 1)
-      this.rectangle.setFillStyle(0x999966)
+      this.setEnabled(false)
+      this.scene.events.emit(EventTypes.BUY_LOT)
     }
   }
 
@@ -40,4 +39,15 @@ export default class BuyLot extends GameObjects.Container {
       this.rectangle.setScale(1.1, 1.1)
     }
   }
+
+  setEnabled(isEnabled = true) {
+    if (isEnabled) {
+      this.enabled = true
+      this.rectangle.setFillStyle(0x649e67)
+    } else {
+      this.enabled = false
+      this.rectangle.setFillStyle(0x999966)
+    }
+  }
+
 }

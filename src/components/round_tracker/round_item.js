@@ -27,4 +27,5 @@ export default class RoundItem extends GameObjects.Container {
     const dice = new Dice(this.scene, 10, -15, diceValues)
     this.add(dice)
   }
+
 }
