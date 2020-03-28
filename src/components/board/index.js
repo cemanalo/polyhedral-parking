@@ -6,6 +6,8 @@ import Tree from '../development/tree'
 import Path from '../development/path'
 import Water from '../development/water'
 import Bench from '../development/bench'
+import RoundTracker from '../round_tracker'
+import DiscardedDie from '../discarded_die'
 
 import { getBoard } from '../../game_component/board'
 
@@ -39,11 +41,15 @@ export default class Board extends Phaser.GameObjects.Container {
     }
     
     // development
-    const tree = new Tree(scene, SIZE * 10, HALF)
-    const path = new Path(scene, SIZE * 11, HALF)
-    const water = new Water(scene, SIZE * 12, HALF)
-    const bench = new Bench(scene, SIZE * 13, HALF)
+    const tree = new Tree(scene, SIZE * 10 + 20, HALF)
+    const path = new Path(scene, SIZE * 11 + 20, HALF)
+    const water = new Water(scene, SIZE * 12 + 20, HALF)
+    const bench = new Bench(scene, SIZE * 13 + 20, HALF)
 
-    super(scene, x, y, [ ...cells, ...penalties, tree, path, water, bench ])
+    const roundTracker = new RoundTracker(scene, SIZE * 10, SIZE + 20)
+
+    const discardedDie = new DiscardedDie(scene, SIZE * 3 + 10, (SIZE * 10) - 15)
+
+    super(scene, x, y, [ ...cells, ...penalties, tree, path, water, bench, roundTracker, discardedDie ])
   }
 }
