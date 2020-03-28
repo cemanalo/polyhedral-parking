@@ -8,6 +8,8 @@ import Water from '../development/water'
 import Bench from '../development/bench'
 import RoundTracker from '../round_tracker'
 import DiscardedDie from '../discarded_die'
+import Dice from '../dice'
+import RollDice from '../button/roll_dice'
 
 import { getBoard } from '../../game_component/board'
 
@@ -20,7 +22,6 @@ export default class Board extends Phaser.GameObjects.Container {
 
     const cells = []
     const penalties = []
-    const developments = []
 
     // board
     for(var row = 0; row < 9; row++) {
@@ -47,9 +48,11 @@ export default class Board extends Phaser.GameObjects.Container {
     const bench = new Bench(scene, SIZE * 13 + 20, HALF)
 
     const roundTracker = new RoundTracker(scene, SIZE * 10, SIZE + 20)
-
     const discardedDie = new DiscardedDie(scene, SIZE * 3 + 10, (SIZE * 10) - 15)
+    const dice = new Dice(scene, SIZE * 10 + 20, SIZE * 9.6)
 
-    super(scene, x, y, [ ...cells, ...penalties, tree, path, water, bench, roundTracker, discardedDie ])
+    const rollDiceBtn = new RollDice(scene, SIZE * 13 + 20, SIZE * 10.7)
+    super(scene, x, y, [ ...cells, ...penalties, tree, path, water, bench, roundTracker, discardedDie, dice, rollDiceBtn ])
+
   }
 }

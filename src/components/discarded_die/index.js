@@ -9,9 +9,9 @@ export default class DiscardedDie extends GameObjects.Container {
     const label = '1★ per discarded die'
     const FONT_COLOR = '#fc0303'
 
-    const text = new GameObjects.Text(scene, 0, 0, label, { color: FONT_COLOR, fontSize: 8 })
+    const text = new GameObjects.Text(scene, 0, 0, label, { color: FONT_COLOR, fontSize: 10 })
     for(var i = 0; i < MAX_ITEM; i++) {
-      const discardedItem = new DiscardedItem(scene, (SIZE * i) + 100, 0)
+      const discardedItem = new DiscardedItem(scene, (SIZE * i) + 125, 0)
       discardedItems.push(discardedItem)
     }
 
