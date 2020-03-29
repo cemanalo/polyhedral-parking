@@ -14,6 +14,7 @@ import BuyLot from '../button/buy_lot'
 
 import { getBoard } from '../../game_component/board'
 import EventTypes from '../../event_types'
+import ActionTypes from '../../action_types'
 import GameMessage from './game_message'
 
 export default class Board extends Phaser.GameObjects.Container {
@@ -67,6 +68,8 @@ export default class Board extends Phaser.GameObjects.Container {
     this.buyLotBtn = buyLotBtn
     this.rollDiceBtn = rollDiceBtn
 
+    this.scene.actionNeed = ActionTypes.BUY_LOT
+
     scene.events.on(EventTypes.ROLL_DICE_DONE, this.onRollDiceDone, this)
     scene.events.on(EventTypes.DIE_SELECTED, this.onDieSelected, this)
     scene.events.on(EventTypes.DIE_DESELECTED, this.onDieDeselected, this)
@@ -75,8 +78,10 @@ export default class Board extends Phaser.GameObjects.Container {
   }
 
   onBuyLot() {
-    // const cell = this.cells.find((c) => Phaser.Geom.Point.Equals(c.boardIdx, this.scene.selectedDice))
-    // cell.crossOut()
+    this.scene.boughtLot = this.scene.selectedCell
+    this.scene.selectedDice = []
+    this.guideText.setText(GameMessage.SELECT_DICE)
+    this.scene.actionNeed = ActionTypes.BUY_DEV
   }
 
   onRollDiceDone() {
@@ -85,13 +90,20 @@ export default class Board extends Phaser.GameObjects.Container {
 
   onDieSelected(value) {
     this.scene.selectedDice.push(value)
-    this.guideText.setText(GameMessage.SELECT_LOT_TO_BUY)
-    this.buyLotBtn.setEnabled()
+    switch(this.scene.actionNeed) {
+      case ActionTypes.BUY_LOT:
+        this.guideText.setText(GameMessage.SELECT_LOT_TO_BUY)
+        break
+      case ActionTypes.BUY_DEV:
+        this.guideText.setText(GameMessage.CLICK_DEV_TO_CONFIRM)
+        break
+    }
     this.onSelectedDiceUpdated()
   }
 
   onSelectedCell(boardIdx) {
     this.scene.selectedCell = boardIdx
+    this.buyLotBtn.setEnabled()
     console.log({selectedCell: boardIdx})
   }
 

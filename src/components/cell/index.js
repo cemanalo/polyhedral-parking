@@ -1,12 +1,17 @@
 import Phaser  from 'phaser'
 import EventTypes from '../../event_types'
+import ActionTypes from '../../action_types'
+
+const BLUE = 0x0f79a6
+const DEFAULT_COLOR = 0xffffff
+const GREEN = 0x34e81c
 
 export default class Cell extends Phaser.GameObjects.Container {
   constructor(scene, x, y, value, boardIdx) {
     const SIZE = 50
     const FONT_COLOR = 0xfff
     const HALF = SIZE / 2
-    const rectangle = new Phaser.GameObjects.Rectangle(scene, HALF , HALF, SIZE, SIZE, 0xffffff, 1)
+    const rectangle = new Phaser.GameObjects.Rectangle(scene, HALF , HALF, SIZE, SIZE, DEFAULT_COLOR, 1)
     const border_top = new Phaser.GameObjects.Line(scene, HALF, 0, 0, 0, SIZE, 0, 0)
     const border_bottom = new Phaser.GameObjects.Line(scene, HALF, SIZE, 0, 0, SIZE, 0, 0)
     const border_left = new Phaser.GameObjects.Line(scene, 0, HALF, 0, 0, 0, SIZE, 0)
@@ -30,31 +35,45 @@ export default class Cell extends Phaser.GameObjects.Container {
 
     this.scene.events.on(EventTypes.SELECTED_DICE_UPDATED, this.onSelectedDiceUpdated, this)
     this.scene.events.on(EventTypes.SELECTED_CELL, this.onSelectedCell, this)
+    this.scene.events.on(EventTypes.BUY_LOT, this.onBuyLot, this)
+
     this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, this.onPointerUp)
+  }
+
+  onBuyLot() {
+    const selectedCell = this.scene.selectedCell
+    if (Phaser.Geom.Point.Equals(selectedCell, this.boardIdx) && !this.bought) {
+      this.bought = true
+    } else {
+      this.rectangle.setFillStyle(DEFAULT_COLOR)
+    }
+
   }
 
   onSelectedCell(boardIdx) {
     const sum = this.scene.selectedDice.reduce((prev, curr) => prev + curr, 0)
     if(!Phaser.Geom.Point.Equals(this.boardIdx, boardIdx) && !this.bought && this.value == sum) {
-      this.rectangle.setFillStyle(0x0f79a6, .7)
+      this.rectangle.setFillStyle(BLUE, .7)
       this.isSelectable = true
     }
   }
 
   onSelectedDiceUpdated() {
     const sum = this.scene.selectedDice.reduce((prev, curr) => prev + curr, 0)
-    this.rectangle.setFillStyle(0xffffff)
-    this.isSelectable = false
 
-    if(!this.bought && this.value == sum) {
-      this.rectangle.setFillStyle(0x0f79a6, .7)
-      this.isSelectable = true
+    if(this.scene.actionNeed === ActionTypes.BUY_LOT) {
+      this.rectangle.setFillStyle(DEFAULT_COLOR)
+      this.isSelectable = false
+      if(!this.bought && this.value == sum) {
+        this.rectangle.setFillStyle(BLUE, .7)
+        this.isSelectable = true
+      }
     }
   }
 
   onPointerUp() {
     if(this.isSelectable) {
-      this.rectangle.setFillStyle(0x34e81c, .7)
+      this.rectangle.setFillStyle(GREEN, .7)
       this.isSelectable = false
       this.scene.events.emit(EventTypes.SELECTED_CELL, this.boardIdx)
     }
