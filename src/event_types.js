@@ -5,5 +5,6 @@ export default {
   DIE_DESELECTED: 'die_deselected',
   SELECTED_DICE_UPDATED: 'selected_dice_updated',
   SELECTED_CELL: 'selected_cell',
-  BUY_LOT: 'buy_lot'
+  BUY_LOT: 'buy_lot',
+  BUY_DEV: 'buy_dev'
 }

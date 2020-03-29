@@ -17,10 +17,11 @@ import EventTypes from '../../event_types'
 import ActionTypes from '../../action_types'
 import GameMessage from './game_message'
 
+const SIZE = 50
+const HALF = SIZE / 2
+
 export default class Board extends Phaser.GameObjects.Container {
   constructor(scene, x, y) {
-    const SIZE = 50
-    const HALF = SIZE / 2
     const boardSetup = getBoard()
     const penaltyValues = ['1★', '3★', '6★']
 
@@ -75,6 +76,22 @@ export default class Board extends Phaser.GameObjects.Container {
     scene.events.on(EventTypes.DIE_DESELECTED, this.onDieDeselected, this)
     scene.events.on(EventTypes.SELECTED_CELL, this.onSelectedCell, this)
     scene.events.on(EventTypes.BUY_LOT, this.onBuyLot, this)
+    scene.events.on(EventTypes.BUY_DEV, this.onBuyDev, this)
+  }
+
+  onBuyDev(texture) {
+    const point = this.scene.selectedCell
+    const xAxis = point.x * SIZE + HALF
+    const yAxis = point.y * SIZE + HALF
+
+    const image = new Phaser.GameObjects.Image(this.scene, xAxis, yAxis, texture)
+    image.scale = .8
+    this.add(image)
+
+    this.scene.boughtLot = undefined
+    this.guideText.setText(GameMessage.SELECT_DICE)
+    this.scene.actionNeed = ActionTypes.BUY_LOT
+    this.scene.selectedDice = []
   }
 
   onBuyLot() {

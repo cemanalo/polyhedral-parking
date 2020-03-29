@@ -24,6 +24,7 @@ export default class Die extends GameObjects.Container {
     this.value = value
 
     scene.events.on(EventTypes.BUY_LOT, this.crossOut, this)
+    scene.events.on(EventTypes.BUY_DEV, this.crossOut, this)
   }
 
   crossOut() {
